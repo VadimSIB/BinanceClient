@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Binance client</string>
+    <string name="title_bid">Bid</string>
+    <string name="title_ask">Ask</string>
+    <string name="title_inf">Inf</string>
+    <string name="title_total">Total</string>
+</resources>
