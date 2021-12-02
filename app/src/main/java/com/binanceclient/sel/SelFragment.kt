@@ -3,6 +3,7 @@ package com.binanceclient.sel
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -36,10 +37,22 @@ class SelFragment : Fragment() {
     fun addListenerOnSpinnerItemSelection() {
         spinner = binding.spinnerCryptoPair
         spinner?.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, CryptoPairType.getNames()))
+        var spinnerTouched = false
+
+        spinner!!.setOnTouchListener (object : View.OnTouchListener{
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                v?.performClick()
+                spinnerTouched = true
+                return v?.onTouchEvent(event) ?: true
+            }
+        })
+
         spinner?.setOnItemSelectedListener(object : OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View, pos: Int, id: Long) {
-                val item: CryptoPairType = CryptoPairType.fromPairName(spinner?.getSelectedItem().toString())
-                binanceViewModel.selectPair(item._name)
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+                if (spinnerTouched) {
+                    val item: CryptoPairType = CryptoPairType.fromPairName(spinner?.getSelectedItem().toString())
+                    binanceViewModel.selectPair(item._name)
+                }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         })

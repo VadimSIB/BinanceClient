@@ -20,8 +20,7 @@ class InfFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        infViewModel =
-            ViewModelProvider(this).get(InfViewModel::class.java)
+        infViewModel = ViewModelProvider(this).get(InfViewModel::class.java)
 
         _binding = FragmentInfBinding.inflate(inflater, container, false)
         val root: View = binding.root

@@ -38,7 +38,7 @@ abstract class XFragment : Fragment() {
             xGridAdapter.notifyDataSetChanged()
         } })
 
-        binanceViewModel.selected.observe(viewLifecycleOwner, { it?.let {
+        binanceViewModel.savedSelected.observe(viewLifecycleOwner, { it?.let {
             val pos: Int = it.indexOf("/")
             val quotValuta: String = it.substring(0, pos)
             val baseValuta: String = it.substring(pos+1)

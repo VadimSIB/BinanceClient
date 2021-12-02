@@ -36,7 +36,7 @@
              android:paddingEnd="6dp"
              app:layout_column="1"
              app:layout_row="0"
-            app:layout_columnWeight="1"  />
+            app:layout_columnWeight="1"/>
 
          <TextView
              android:id="@+id/total_text"

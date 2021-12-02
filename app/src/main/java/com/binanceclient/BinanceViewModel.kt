@@ -3,6 +3,7 @@ package com.binanceclient
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.binance.api.client.BinanceApiClientFactory
 import com.binance.api.client.BinanceApiWebSocketClient
@@ -17,7 +18,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
-class BinanceViewModel : ViewModel() {
+class BinanceViewModel(private val state: SavedStateHandle): ViewModel() {
 
     private val BIDS = "BIDS"
     private val ASKS = "ASKS"
@@ -39,13 +40,14 @@ class BinanceViewModel : ViewModel() {
         get() = _askOrderBook
     var socketClient: BinanceApiWebSocketClient?=null
     var runningSocket: Closeable? = null
-    val selected = MutableLiveData<String>()
+    val savedSelected = state.getLiveData<String>("selected")
 
     fun selectPair(item: String) {
-        selected.value = item
         val nam = CryptoPairType.fromPairName(item).toString()
         initializeDepthCache(nam)
         startDepthEventStreaming(nam)
+        state["nam"] = nam
+        state["selected"] = item
     }
 
     private fun initializeDepthCache(symbol: String) {
@@ -113,6 +115,20 @@ class BinanceViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    init {
+        val savedNam = state.get<String>("nam")
+        val symb: String
+        if (savedNam!=null) {
+            symb = savedNam
+        }else{
+            symb = "BTCUSDT"
+            state["selected"] = "BTC/USDT"
+        }
+        state["nam"] = symb
+        initializeDepthCache(symb)
+        startDepthEventStreaming(symb)
     }
 
     override fun onCleared() {
