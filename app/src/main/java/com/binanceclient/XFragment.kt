@@ -53,5 +53,4 @@ abstract class XFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

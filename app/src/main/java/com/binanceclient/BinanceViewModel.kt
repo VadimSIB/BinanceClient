@@ -29,7 +29,7 @@ class BinanceViewModel(private val state: SavedStateHandle): ViewModel() {
     private lateinit var depthCache: MutableMap<String, NavigableMap<BigDecimal, BigDecimal>>
     private var lastUpdateId: Long = 0
     @Volatile
-    private var symbolVolatile: String = ""
+    private var symbolVolatile: String? = ""
     @Volatile
     private var startDepthCacheVolatile = false
     private var _bidOrderBook = MutableLiveData<List<MutableMap.MutableEntry<BigDecimal, BigDecimal>>>()
@@ -43,17 +43,17 @@ class BinanceViewModel(private val state: SavedStateHandle): ViewModel() {
     val savedSelected = state.getLiveData<String>("selected")
 
     fun selectPair(item: String) {
-        val nam = CryptoPairType.fromPairName(item).toString()
-        initializeDepthCache(nam)
-        startDepthEventStreaming(nam)
-        state["nam"] = nam
+        val sym = CryptoPairType.fromPairName(item)?.symbol
+        initializeDepthCache(sym)
+        startDepthEventStreaming(sym)
+        state["sym"] = sym
         state["selected"] = item
     }
 
-    private fun initializeDepthCache(symbol: String) {
+    private fun initializeDepthCache(symbol: String?) {
         val factory = BinanceApiClientFactory.newInstance()
         val client = factory.newAsyncRestClient()
-        client.getOrderBook(symbol.uppercase(Locale("english")), 100) { response: OrderBook ->
+        client.getOrderBook(symbol?.uppercase(Locale("english")), 100) { response: OrderBook ->
             depthCache = HashMap()
             val asks: NavigableMap<BigDecimal, BigDecimal> = TreeMap(Comparator.reverseOrder())
             val bids: NavigableMap<BigDecimal, BigDecimal> = TreeMap(Comparator.reverseOrder())
@@ -69,7 +69,7 @@ class BinanceViewModel(private val state: SavedStateHandle): ViewModel() {
         }
     }
 
-    private fun startDepthEventStreaming(symbol: String) {
+    private fun startDepthEventStreaming(symbol: String?) {
         val factory = BinanceApiClientFactory.newInstance()
         if (runningSocket!=null) {
             runningSocket?.close()
@@ -82,7 +82,7 @@ class BinanceViewModel(private val state: SavedStateHandle): ViewModel() {
         }
         socketClient = factory.newWebSocketClient()
         symbolVolatile = symbol
-        runningSocket = socketClient?.onDepthEvent(symbol.lowercase(Locale("english"))) { response: DepthEvent ->
+        runningSocket = socketClient?.onDepthEvent(symbol?.lowercase(Locale("english"))) { response: DepthEvent ->
             if (startDepthCacheVolatile) {
                 if (response.symbol == symbolVolatile) {
                     if (response.finalUpdateId > lastUpdateId) {
@@ -118,7 +118,7 @@ class BinanceViewModel(private val state: SavedStateHandle): ViewModel() {
     }
 
     init {
-        val savedNam = state.get<String>("nam")
+        val savedNam = state.get<String>("sym")
         val symb: String
         if (savedNam!=null) {
             symb = savedNam
@@ -126,7 +126,7 @@ class BinanceViewModel(private val state: SavedStateHandle): ViewModel() {
             symb = "BTCUSDT"
             state["selected"] = "BTC/USDT"
         }
-        state["nam"] = symb
+        state["sym"] = symb
         initializeDepthCache(symb)
         startDepthEventStreaming(symb)
     }

@@ -36,9 +36,9 @@ class SelFragment : Fragment() {
 
     fun addListenerOnSpinnerItemSelection() {
         spinner = binding.spinnerCryptoPair
-        spinner?.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, CryptoPairType.getNames()))
+        spinner?.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,
+            CryptoPairType::class.sealedSubclasses.map{it.objectInstance?.name}))
         var spinnerTouched = false
-
         spinner!!.setOnTouchListener (object : View.OnTouchListener{
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                 v?.performClick()
@@ -50,8 +50,7 @@ class SelFragment : Fragment() {
         spinner?.setOnItemSelectedListener(object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 if (spinnerTouched) {
-                    val item: CryptoPairType = CryptoPairType.fromPairName(spinner?.getSelectedItem().toString())
-                    binanceViewModel.selectPair(item._name)
+                    binanceViewModel.selectPair(spinner?.getSelectedItem().toString())
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
