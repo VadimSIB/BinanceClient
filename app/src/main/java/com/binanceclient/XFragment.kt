@@ -15,7 +15,7 @@ import java.math.BigDecimal
 abstract class XFragment : Fragment() {
 
     val binanceViewModel: BinanceViewModel by activityViewModels()
-    protected abstract val color: String
+    protected abstract val color: Int
     protected abstract fun getXOrderBook(): LiveData<List<MutableMap.MutableEntry<BigDecimal, BigDecimal>>>
     private var _binding: FragmentXBinding? = null
     private val binding get() = _binding!!

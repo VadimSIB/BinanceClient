@@ -1,6 +1,5 @@
 package com.binanceclient
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,9 +7,9 @@ import com.binanceclient.databinding.FragmentXCellBinding
 import java.math.BigDecimal
 
 
-class XAdapter(_data: List<MutableMap.MutableEntry<BigDecimal, BigDecimal>>, _color: String): RecyclerView.Adapter<XAdapter.ItemViewHolder>() {
+class XAdapter(_data: List<MutableMap.MutableEntry<BigDecimal, BigDecimal>>, _color: Int): RecyclerView.Adapter<XAdapter.ItemViewHolder>() {
     private var data: List<MutableMap.MutableEntry<BigDecimal, BigDecimal>>
-    private var color: String
+    private var color: Int
     init {this.data = _data; this.color = _color}
     fun setData(_data: List<MutableMap.MutableEntry<BigDecimal, BigDecimal>>){this.data = _data}
 
@@ -20,7 +19,7 @@ class XAdapter(_data: List<MutableMap.MutableEntry<BigDecimal, BigDecimal>>, _co
             itemBinding.amountText.text = String.format("%8.4f", order.value)
             itemBinding.priceText.text =  String.format("%11.6f", order.key)
             itemBinding.totalText.text = String.format("%11.6f", order.key*order.value)
-            itemBinding.priceText.setTextColor(Color.parseColor(color))
+            itemBinding.priceText.setTextColor(color)
         }
     }
 

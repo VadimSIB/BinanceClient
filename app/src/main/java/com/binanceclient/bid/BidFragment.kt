@@ -1,13 +1,16 @@
 package com.binanceclient.bid
 
 
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
+import com.binanceclient.App
+import com.binanceclient.R
 import com.binanceclient.XFragment
 import java.math.BigDecimal
 
 
 class BidFragment : XFragment() {
-    override val color = "#009090"
+    override val color = ResourcesCompat.getColor(App.resourses!!, R.color.bottom_nav_1,null)
     override fun getXOrderBook(): LiveData<List<MutableMap.MutableEntry<BigDecimal, BigDecimal>>> {
         return binanceViewModel.bidOrderBook
     }
