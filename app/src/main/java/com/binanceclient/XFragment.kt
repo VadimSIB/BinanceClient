@@ -33,20 +33,24 @@ abstract class XFragment : Fragment() {
         xGridAdapter = XAdapter(list, color)
         binding.xCells.adapter = xGridAdapter
         val xOrderBook = getXOrderBook()
-        xOrderBook.observe(viewLifecycleOwner, { it?.let {
-            xGridAdapter.setData(it)
-            xGridAdapter.notifyDataSetChanged()
-        } })
+        xOrderBook.observe(viewLifecycleOwner) {
+            it?.let {
+                xGridAdapter.setData(it)
+                xGridAdapter.notifyDataSetChanged()
+            }
+        }
 
-        binanceViewModel.savedSelected.observe(viewLifecycleOwner, { it?.let {
-            val pos: Int = it.indexOf("/")
-            val quotValuta: String = it.substring(0, pos)
-            val baseValuta: String = it.substring(pos+1)
-            val am = "Amount $quotValuta"
-            val pr = "Price, $baseValuta"
-            binding.amountHat.setText(am)
-            binding.priceHat.setText(pr)
-        } })
+        binanceViewModel.savedSelected.observe(viewLifecycleOwner) {
+            it?.let {
+                val pos: Int = it.indexOf("/")
+                val quotValuta: String = it.substring(0, pos)
+                val baseValuta: String = it.substring(pos + 1)
+                val am = "Amount $quotValuta"
+                val pr = "Price, $baseValuta"
+                binding.amountHat.setText(am)
+                binding.priceHat.setText(pr)
+            }
+        }
     }
 
     override fun onDestroyView() {

@@ -21,25 +21,26 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main)
-
+        var col = R.color.bottom_nav_color1
+        var but = R.id.navigation_bid
         binding.navView.setOnItemSelectedListener{
             when (it.itemId) {
                 R.id.navigation_bid -> {
-                    navController.navigate(R.id.navigation_bid)
-                    binding.navView.itemIconTintList = ContextCompat.getColorStateList(this, R.color.bottom_nav_color1)
-                    binding.navView.itemTextColor = ContextCompat.getColorStateList(this, R.color.bottom_nav_color1)
+                    col = R.color.bottom_nav_color1
+                    but = R.id.navigation_bid
                 }
                 R.id.navigation_ask -> {
-                    navController.navigate(R.id.navigation_ask)
-                    binding.navView.itemIconTintList = ContextCompat.getColorStateList(this, R.color.bottom_nav_color2)
-                    binding.navView.itemTextColor = ContextCompat.getColorStateList(this, R.color.bottom_nav_color2)
+                    col = R.color.bottom_nav_color2
+                    but = R.id.navigation_ask
                 }
                 R.id.navigation_inf -> {
-                    navController.navigate(R.id.navigation_inf)
-                    binding.navView.itemIconTintList = ContextCompat.getColorStateList(this, R.color.bottom_nav_color3)
-                    binding.navView.itemTextColor = ContextCompat.getColorStateList(this, R.color.bottom_nav_color3)
+                    col = R.color.bottom_nav_color3
+                    but = R.id.navigation_inf
                 }
             }
+            navController.navigate(but)
+            binding.navView.itemIconTintList = ContextCompat.getColorStateList(this, col)
+            binding.navView.itemTextColor = ContextCompat.getColorStateList(this, col)
             true
         }
         val activId: Int
