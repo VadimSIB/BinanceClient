@@ -13,15 +13,7 @@ import java.math.BigDecimal
 
 
 class BidFragment : XFragment() {
-    override var color = 0
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        color =  ResourcesCompat.getColor(requireContext().resources, R.color.bottom_nav_1,null)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
+    override var clr = R.color.bottom_nav_1
     override fun getXOrderBook(): LiveData<List<MutableMap.MutableEntry<BigDecimal, BigDecimal>>> {
         return binanceViewModel.bidOrderBook
     }
