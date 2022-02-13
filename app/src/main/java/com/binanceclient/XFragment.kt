@@ -1,6 +1,5 @@
 package com.binanceclient
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,14 +7,18 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.binanceclient.databinding.FragmentXBinding
+import com.binanceclient.sel.SelViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigDecimal
 
-
+@AndroidEntryPoint
 abstract class XFragment : Fragment() {
 
-    val binanceViewModel: BinanceViewModel by activityViewModels()
+    val selViewModel: SelViewModel by activityViewModels()
+    val binanceViewModel: BinanceViewModel by viewModels()
     private var color: Int = 0
     protected abstract val clr: Int
     protected abstract fun getXOrderBook(): LiveData<List<MutableMap.MutableEntry<BigDecimal, BigDecimal>>>
@@ -43,7 +46,7 @@ abstract class XFragment : Fragment() {
             }
         }
 
-        binanceViewModel.savedSelected.observe(viewLifecycleOwner) {
+        selViewModel.savedSelected.observe(viewLifecycleOwner) {
             it?.let {
                 val pos: Int = it.indexOf("/")
                 val quotValuta: String = it.substring(0, pos)

@@ -5,8 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import com.binanceclient.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val KEY_SELECTED_ID = "KEY_SELECTED_ID"
@@ -21,8 +22,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main)
-        var col = R.color.bottom_nav_color1
-        var but = R.id.navigation_bid
+        var col = 0
+        var but = 0
         binding.navView.setOnItemSelectedListener{
             when (it.itemId) {
                 R.id.navigation_bid -> {

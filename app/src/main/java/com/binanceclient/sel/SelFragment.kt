@@ -12,16 +12,16 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.binanceclient.BinanceViewModel
 import com.binanceclient.CryptoPairType
 import com.binanceclient.databinding.FragmentSelBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SelFragment : Fragment() {
     private var _binding: FragmentSelBinding? = null
     private val binding get() = _binding!!
     private var spinner: Spinner? = null
-    private val binanceViewModel: BinanceViewModel by activityViewModels()
+    private val selViewModel: SelViewModel by  activityViewModels()
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSelBinding.inflate(inflater, container, false)
@@ -50,7 +50,7 @@ class SelFragment : Fragment() {
         spinner?.setOnItemSelectedListener(object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 if (spinnerTouched) {
-                    binanceViewModel.selectPair(spinner?.getSelectedItem().toString())
+                    selViewModel.selectPair(spinner?.getSelectedItem().toString())
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}

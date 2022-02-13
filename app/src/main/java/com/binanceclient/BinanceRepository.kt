@@ -9,11 +9,13 @@ import com.binance.api.client.domain.market.OrderBookEntry
 import java.io.Closeable
 import java.math.BigDecimal
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.Comparator
 import kotlin.collections.HashMap
 
-
-class BinanceRepository {
+@Singleton
+class BinanceRepository @Inject constructor() {
 
     private val BIDS = "BIDS"
     private val ASKS = "ASKS"
